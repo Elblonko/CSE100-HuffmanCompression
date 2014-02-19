@@ -1,0 +1,110 @@
+/*
+ * Name: Matt Schwegler
+ * CSE: cs100way
+ * Uncompress.cpp
+ *
+ */
+
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string.h>
+#include <queue>
+#include "HCNode.hpp"
+#include "HCTree.hpp"
+
+
+
+using namespace std;
+using std::ofstream;
+/*
+ * main takes in two arguments input file and output file
+ * these will be stored in argv[1] and argv[2] respectively
+ */
+int main(int argc, const char* argv[])
+{   
+    //input stream
+    ifstream inputFile;
+
+    //Create an HCTree object to construct and access HCtree
+    HCTree huff;
+    //create a vector of ints to store the path
+    queue<bool> path;
+    //If statement to check number of arguments
+
+    if(argc < 2)
+    {
+        cerr << "Incorrect number of arguments passed in please include <inputfile> and <outputfile>" <<endl;
+        return 0;
+    }
+    //Create a vector to score ints based on ASCII value as index
+    vector<int> freqs(256, 0);
+
+    //Open the input stream as binary file dont forget to close inputFile.close()
+    inputFile.open(argv[1], ios::binary);
+    //Open second passed in file for output
+    ofstream out(argv[2], ios::out | ios::binary);
+
+    //Check to see file is open then reads it into memory using memblock
+    if(inputFile.is_open())
+    {   
+        
+        //call decodeHuffman will fill freqs in order to call build
+        huff.decodeHuffman(inputFile,freqs);
+
+        //Build the tree using freqs
+        huff.build(freqs);
+
+        //Now read in the totalCount variable to pass into bitInputStream
+        unsigned int expectedBits = ( inputFile.get() << 24) | ( inputFile.get() << 16) | 
+            ( inputFile.get() << 8) | ( inputFile.get());
+
+        //DEBUG
+        //cout << "Expected number of bits: " << expectedBits << endl;
+        
+        //Create the BitInputStream Object
+        BitInputStream Bin(inputFile, path, expectedBits);
+
+        //loop over expectedbits until eof filling the path array
+        while( ! Bin.eof() ){
+        Bin.get();
+        }
+        
+        //with full path array call decode until path is empty
+        while( ! Bin.isPathEmpty() ){       
+           int decodeRet = huff.decode(Bin);
+
+           if(decodeRet == -1){
+               cerr << "Decode returned -1 check for error" << endl;
+           }
+           
+           //now print the symbol to the ofstream
+           unsigned char symbol = (unsigned char)decodeRet;
+            out.put(symbol);
+            
+            //DEBUG
+            //cout << "The symbol found was: " << symbol << endl;
+
+        }
+
+
+        //Check if loop stopped for a non EOF reason
+        if (! inputFile.eof() ){
+            cerr << "There was a problem reading the file." << endl; 
+            return -1;
+        }
+
+    }
+    else{
+        cout << "Was unable to open the passed in file" << endl;
+        return 0;
+    }
+    //close input file
+    inputFile.close();
+    out.close();
+
+
+
+}
+
