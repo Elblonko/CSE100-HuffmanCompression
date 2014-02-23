@@ -10,9 +10,6 @@
 
 #include "HCTree.hpp"
 
-
-
-
 using namespace std;
 
 HCTree::~HCTree(){
@@ -33,7 +30,6 @@ void HCTree::build(const vector<int>& freqs){
     /*First the code must take in freqs and transform them
      * into HCTNode pointers in the leaves vector
      */
-
     for ( unsigned int i = 0; i < freqs.size(); i++){
         //ignore if there is no occurance of this character
         if(freqs[i] != 0){
@@ -116,44 +112,6 @@ void HCTree::build(const vector<int>& freqs){
 
     }
 
-    /*
-    //FOR LEAVES DEBUG
-    int leavecount = 0;
-    for ( unsigned int i = 0; i < leaves.size(); i++){
-    if( (leaves[i])){
-    char ch = i;
-    cerr << *leaves[i] << endl;
-    cerr << "The above char is: " << ch << " with ASCII code: " << i << endl;
-    leavecount++;
-    }
-
-    }
-    */
-
-    /*
-    //FOR LEAVESPQ DEBUG
-    cerr << "The Nodes after priority que are: " << endl;
-    int pqcount = 0;
-    while ( ! leavespq.empty() ){
-
-//Creates a temp variable
-HCNode* temp = leavespq.top();
-
-//pops the element
-leavespq.pop(); 
-
-cerr << *temp << endl;
-
-pqcount++;
-
-}
-
-if(leavecount != pqcount)
-cerr << "The counts do not match" << endl;
-
-//END OF DEBUG
-*/
-
 
 }
 
@@ -208,8 +166,6 @@ void HCTree::encodeHuffman(const vector<int>& freqs, ofstream& out){
             //call to writeInt with num to output integer to file by byte
             writeInt(out, num);
 
-            //DEBUG
-            //cerr << "char is: " << ch << " num is: " << num << endl;
         }
     }
 
@@ -275,9 +231,6 @@ void HCTree::decodeHuffman(ifstream &inputFile, vector<int> &freqs){
 
     //get the count variable written to the file first
     count = ( inputFile.get() << 24) | ( inputFile.get() << 16) | ( inputFile.get() << 8) | ( inputFile.get());
-    //DEBUG
-    //cout << "The count is: " << count << endl;
-
 
     //Need to loop through the header file reading in symbols and counts in that order
     for (unsigned int i = 0; i < count; i++){
@@ -293,10 +246,6 @@ void HCTree::decodeHuffman(ifstream &inputFile, vector<int> &freqs){
         //create the freqs vector in order to call build
         freqs[ch] = sum;
 
-        //DEBUG
-        //cerr << "Inserting sum: " << sum << " into symbol: " << ch << endl;
-
-
         //Check to see if there is an error while reading
         if( ! inputFile.good() ){
             break;
@@ -311,7 +260,7 @@ void HCTree::decodeHuffman(ifstream &inputFile, vector<int> &freqs){
  *  tree, and initialize root pointer and leaves vector.
  */
 int HCTree::decode(BitInputStream& in) const{
-    
+
     //Create HCNode to traverse the tree
     HCNode* temp = root;
 
@@ -332,7 +281,7 @@ int HCTree::decode(BitInputStream& in) const{
         if(temp->symbol){
             return temp->symbol;
         }
-        
+
     }
     //return -1 to indicate there was an error
     return -1;

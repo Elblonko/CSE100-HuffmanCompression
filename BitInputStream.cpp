@@ -1,7 +1,14 @@
+/*
+ * Matthew Schwegler
+ * CS100way
+ *
+ * BitInputStream.cpp
+ * Descrpition: Implrements functions of the BitInputStream.hpp
+ *
+ */
+
+
 #include "BitInputStream.hpp"
-
-
-
 
 /*
  * Takes an int that represents a bit and converts in bitset
@@ -12,12 +19,7 @@ void BitInputStream::get(){
     //use is stream to get a char from the inputfile
     unsigned char ch = in.get();
     bits = ch;
-    
-    /*
-    //DEBUG Make sure bits and ch match
-    printf("%0x\n", ch);
-    cout << "The bits are: " << bits << endl;
-    */
+
 
     for (int i = 7; i >=0; i--)
     {
@@ -35,7 +37,6 @@ void BitInputStream::get(){
         }
     }
 
-    //DEBUG
 }
 
 

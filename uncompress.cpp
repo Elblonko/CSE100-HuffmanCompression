@@ -3,6 +3,11 @@
  * CSE: cs100way
  * Uncompress.cpp
  *
+ * Description: the compliment program to compress.cpp, this is the main
+ *              file designed to take a compressed file as input and output
+ *              the original file prior to compression. This does this using
+ *              the BitInputStream and HCTree classes.
+ *
  */
 
 #include <stdio.h>
@@ -44,7 +49,6 @@ int main(int argc, const char* argv[])
     cerr << "Uncompressing file:" << argv[1] << "...............";
 
     //Open the input stream as binary file dont forget to close inputFile.close()
-    //Open the input stream as binary file dont forget to close inputFile.close()
     //GET FILE SIZE
     inputFile.open(argv[1], ifstream::in | ios::binary);
     inputFile.seekg(0, inputFile.end);
@@ -67,9 +71,6 @@ int main(int argc, const char* argv[])
         //Now read in the totalCount variable to pass into bitInputStream
         unsigned int expectedBits = ( inputFile.get() << 24) | ( inputFile.get() << 16) | 
             ( inputFile.get() << 8) | ( inputFile.get());
-
-        //DEBUG
-        //cout << "Expected number of bits: " << expectedBits << endl;
 
         //Create the BitInputStream Object
         BitInputStream Bin(inputFile, path, expectedBits);
@@ -98,55 +99,55 @@ int main(int argc, const char* argv[])
             }
         }
 
-                //with full path array call decode until path is empty
-                while( ! Bin.isPathEmpty() ){       
-                    int decodeRet = huff.decode(Bin);
+        //with full path array call decode until path is empty
+        while( ! Bin.isPathEmpty() ){       
+            int decodeRet = huff.decode(Bin);
 
-                    if(decodeRet == -1){
-                        cerr << "Decode returned -1 check for error" << endl;
-                    }
-
-                    //now print the symbol to the ofstream
-                    unsigned char symbol = (unsigned char)decodeRet;
-                    out.put(symbol);
-
-                    //DEBUG
-                    //cout << "The symbol found was: " << symbol << endl;
-
-                }
-
-
-                //Check if loop stopped for a non EOF reason
-                if (! inputFile.eof() ){
-                    cerr << "There was a problem reading the file." << endl; 
-                    return -1;
-                }
-
+            if(decodeRet == -1){
+                cerr << "Decode returned -1 check for error" << endl;
             }
-            else{
-                cout << "Was unable to open the passed in file" << endl;
-                return 0;
-            }
-            //close input file
-            inputFile.close();
-            out.close();
 
-            cout << "Done!" << endl;
+            //now print the symbol to the ofstream
+            unsigned char symbol = (unsigned char)decodeRet;
+            out.put(symbol);
 
-            //Open the input stream as binary file dont forget to close inputFile.close()
-            //GET FILE SIZE
-            inputFile.open(argv[2], ifstream::in | ios::binary);
-            inputFile.seekg(0, inputFile.end);
-            double outfileSize = inputFile.tellg();
-            //set file back to beggining
-            inputFile.seekg(0, inputFile.beg);
-
-            cout  << "Uncompression ratio: " << outfileSize/infileSize << endl;
-
-            inputFile.close();
-
-
-
+            //DEBUG
+            //cout << "The symbol found was: " << symbol << endl;
 
         }
+
+
+        //Check if loop stopped for a non EOF reason
+        if (! inputFile.eof() ){
+            cerr << "There was a problem reading the file." << endl; 
+            return -1;
+        }
+
+    }
+    else{
+        cout << "Was unable to open the passed in file" << endl;
+        return 0;
+    }
+    //close input file
+    inputFile.close();
+    out.close();
+
+    cout << "Done!" << endl;
+
+    //Open the input stream as binary file dont forget to close inputFile.close()
+    //GET FILE SIZE
+    inputFile.open(argv[2], ifstream::in | ios::binary);
+    inputFile.seekg(0, inputFile.end);
+    double outfileSize = inputFile.tellg();
+    //set file back to beggining
+    inputFile.seekg(0, inputFile.beg);
+
+    cout  << "Uncompression ratio: " << outfileSize/infileSize << endl;
+
+    inputFile.close();
+
+
+
+
+}
 

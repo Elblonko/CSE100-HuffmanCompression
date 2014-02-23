@@ -42,6 +42,7 @@ int main(int argc, const char* argv[])
 
     //USER OUTPUT MESSAGE
     cerr << "Compressing file: " << argv[1] << "........."; 
+
     //Create a vector to score ints based on ASCII value as index
     vector<int> freqs(256, 0);
 
@@ -53,9 +54,6 @@ int main(int argc, const char* argv[])
     //set file back to beggining
     inputFile.seekg(0, inputFile.beg);
 
-    //cout << "The file to compress is: " << fileSize << endl;
-
-
     //Check to see file is open then reads it into memory using memblock
     if(inputFile.is_open())
     {
@@ -65,7 +63,7 @@ int main(int argc, const char* argv[])
         while(1){
             ch = inputFile.get();
 
-             //Check to see if there is an error while reading
+            //Check to see if there is an error while reading
             if( ! inputFile.good() ){
                 break;
             }
@@ -81,15 +79,7 @@ int main(int argc, const char* argv[])
             return -1;
         }
 
-        //TODO delete
-        /*
-        //Debug loop used to see what is printed from file
-        while(1){
-            char ch = inputFile.get();
-            if(!inputFile.good() ) break;
-            cerr << "That char is: " << ch << endl;
-        }
-        */
+
     }
     else{
         cout << "Was unable to open the passed in file" << endl;
@@ -98,18 +88,6 @@ int main(int argc, const char* argv[])
     //close input file
     inputFile.close();
 
-    
-    //TODO delete DEBUG to check whats in the above created array
-    //check to see the contents of the array
-    /*
-    for ( int i = 0; i < freqs.size(); i++){
-        if(freqs[i] != 0){
-            char ch = i;
-            cerr << "The ASCII is: " << ch << " The count is: " << freqs[i] << endl;
-        }
-
-    }
-    */
 
     //Create the HCTree to build the tree with
     HCTree huff;
@@ -120,6 +98,7 @@ int main(int argc, const char* argv[])
      * huff is now a completed huffman search tree
      * now make a call to encode function reading the input
      * file again use this to trace that path and print them
+     *
      */
     //Open the input stream as binary file dont forget to close inputFile.close()
     inputFile.open(argv[1], ios::binary);
@@ -127,11 +106,10 @@ int main(int argc, const char* argv[])
     ofstream out(argv[2], ios::out | ios::binary);
     //create a queue to fill with the bit path
     queue<unsigned char> path;
-        //create BitOutputStream object
+    //create BitOutputStream object
     BitOutputStream bitOut(out, path);
 
     //Write each symbol in freqs to output file followed by count
-    //TODO writing the '\n' symbol causes a new line, will have to check if this causes a problem
     //or reads correctly
     huff.encodeHuffman(freqs, out);
 
@@ -148,13 +126,13 @@ int main(int argc, const char* argv[])
             //make a call to encode
             huff.encode(ch, bitOut);
 
-             //Check to see if there is an error while reading
+            //Check to see if there is an error while reading
             if( ! inputFile.good() ){
                 break;
             }
 
         }
-        
+
         //flush any remaining bits in bitOut
         bitOut.Bflush();
 
@@ -191,7 +169,5 @@ int main(int argc, const char* argv[])
     cout  << "Compression achieved: " << outfileSize/infileSize << endl;
 
     inputFile.close();
-
-
 
 }

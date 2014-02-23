@@ -1,7 +1,6 @@
 #ifndef INPUTSTREAM_HPP
 #define INPUTSTREAM_HPP
 
-#
 /*
  * Matthew Schwegler
  * CS100way
@@ -48,8 +47,8 @@ class BitInputStream {
         }
 
         /*
-         * writes a bit at a time to the object
-         * when reaches 8th bit writes to output
+         * Takes in a byte at a time using the in steam  
+         * then iterates over them reading the input bit by bit
          *
          */
         void get();

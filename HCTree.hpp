@@ -1,6 +1,20 @@
 #ifndef HCTREE_HPP
 #define HCTREE_HPP
 
+/*
+ * Author: Matthew Schwegler
+ * CS100way
+ *
+ * File: HCTree.hpp
+ *
+ * Description: This file containes the function of HCTree. This class implements functions
+ *              key to the construction of the huffman tree, encoding of the huffman tree and
+ *              decoding of the huffman tree. These are used by the compress file to compress
+ *              inputed files.
+ *
+ */
+
+
 #include <queue>
 #include <vector>
 #include "HCNode.hpp"
@@ -42,8 +56,6 @@ public:
 
     //destructor
     ~HCTree();
-
-
 
     /** Use the Huffman algorithm to build a Huffman coding trie.
      *  PRECONDITION: freqs is a vector of ints, such that freqs[i] is 
@@ -93,10 +105,6 @@ public:
      *
      */
     void decodeHuffman(ifstream &inputFile, vector<int> &freqs);
-
-
-
-
 
 
 };
