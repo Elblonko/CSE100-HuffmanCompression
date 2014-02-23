@@ -11,3 +11,9 @@ A program that takes 2 command line arguments of the form
 
 Together these two executables can compress and uncompress a file using
 huffmans compression algorithm
+
+Supporting Files Class Files:
+HCNode
+HCTree
+BitInputStream
+BitOutputStream
