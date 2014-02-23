@@ -200,6 +200,8 @@ void HCTree::encodeHuffman(const vector<int>& freqs, ofstream& out){
             unsigned char ch = i;
             out.put(ch);
 
+
+
             //writes the integer representing count
             unsigned int num = freqs[i];
 
@@ -220,9 +222,6 @@ void HCTree::encodeHuffman(const vector<int>& freqs, ofstream& out){
  * to that symbol and prints the path out bit by bit
  */
 void HCTree::encode(byte symbol, BitOutputStream& out) const{
-
-    //takes the symbol passed in
-
 
     //Uses recurse root too print out bits for PATH in in the tree 
     if(leaves[symbol]){

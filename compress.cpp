@@ -3,6 +3,11 @@
  * CSE: cs100way
  * Compress.cpp
  *
+ * Description: This file contains the main the program compress is run from the file
+ *              takes an input file and transforms it using the huffman compression algorithm
+ *              into a new smaller compressed file. This new file contains a header which is
+ *              used by the compliment uncompress program to rebuild the original file.
+ *
  */
 
 #include <stdio.h>
@@ -22,11 +27,11 @@ using std::ofstream;
 /*
  * main takes in two arguments input file and output file
  * these will be stored in argv[1] and argv[2] respectively
+ *
  */
 int main(int argc, const char* argv[])
 {
     ifstream inputFile;     //file to store the open passed in file
-    //ofstream outputFile;    //file to store the output stream location
 
     //If statement to check number of arguments
     if(argc < 2)
@@ -34,11 +39,21 @@ int main(int argc, const char* argv[])
         cerr << "Incorrect number of arguments passed in please include <inputfile> and <outputfile>" <<endl;
         return 0;
     }
+
+    //USER OUTPUT MESSAGE
+    cerr << "Compressing file: " << argv[1] << "........."; 
     //Create a vector to score ints based on ASCII value as index
     vector<int> freqs(256, 0);
 
     //Open the input stream as binary file dont forget to close inputFile.close()
-    inputFile.open(argv[1], ios::binary);
+    //GET FILE SIZE
+    inputFile.open(argv[1], ifstream::in | ios::binary);
+    inputFile.seekg(0, inputFile.end);
+    double infileSize = inputFile.tellg();
+    //set file back to beggining
+    inputFile.seekg(0, inputFile.beg);
+
+    //cout << "The file to compress is: " << fileSize << endl;
 
 
     //Check to see file is open then reads it into memory using memblock
@@ -157,9 +172,26 @@ int main(int argc, const char* argv[])
         cout << "Was unable to open the passed in file" << endl;
         return 0;
     }
+
     //close input file
     inputFile.close();
     //close output file
     out.close();
+
+    cout << "Done!" << endl;
+
+    //Open the input stream as binary file dont forget to close inputFile.close()
+    //GET FILE SIZE
+    inputFile.open(argv[2], ifstream::in | ios::binary);
+    inputFile.seekg(0, inputFile.end);
+    double outfileSize = inputFile.tellg();
+    //set file back to beggining
+    inputFile.seekg(0, inputFile.beg);
+
+    cout  << "Compression achieved: " << outfileSize/infileSize << endl;
+
+    inputFile.close();
+
+
 
 }
