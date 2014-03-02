@@ -13,12 +13,12 @@ The program is broken into two executable files. A compression program to compre
 Compress:
 
 A program that takes 2 command line arguments of the form
-./compress <FileToCompress> <FileToCompressInto>
+./compress (FileToCompress) (FileToCompressInto)
 
 Uncompress:
 
 A program that takes 2 command line arguments of the form
-./uncompress <FileToCompressInto> <FileToStoreUncompressedVersion>
+./uncompress (FileToCompressInto) (FileToStoreUncompressedVersion)
 
 Supporting Files Class Files:
 
