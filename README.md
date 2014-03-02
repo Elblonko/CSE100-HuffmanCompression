@@ -3,8 +3,8 @@ Author Matthew Schwegler
 Program Name: Huffman Compression.
 
 Program Description:
-This program is designed to take an input file and compress it using Huffmans coding algorithm. After compression the file can then be uncompressed using the compliment program.
 
+This program is designed to take an input file and compress it using Huffmans coding algorithm. After compression the file can then be uncompressed using the compliment program.
 
 How to use:
 
